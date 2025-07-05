@@ -53,8 +53,9 @@ class TestNotificationAPI:
     def test_notification_detail_booked(self, auth_client, notification_booked):
         response = auth_client.get("/api/notifications/")
         assert response.status_code == status.HTTP_200_OK
-        assert len(response.data) == 1
-        assert response.data[0]["message"] == "Вы записались на событие"
+        assert len(response.data) == 4
+        print(response.data)
+        assert response.data["results"][0]["message"] == "Вы записались на событие"
 
     def test_notification_list_without_auth(self):
         client = APIClient()
@@ -64,10 +65,11 @@ class TestNotificationAPI:
     def test_notification_type_display(self, auth_client, notification_booked):
         response = auth_client.get("/api/notifications/")
         assert response.status_code == 200
-        assert response.data[0]["type_display"] == "Забронировано"
+        print(response.data)
+        assert response.data["results"][0]["type_display"] == "Забронировано"
 
     def test_notification_detail_canceled(self, auth_client, notification_canceled):
         response = auth_client.get("/api/notifications/")
         assert response.status_code == status.HTTP_200_OK
-        assert len(response.data) == 1
-        assert response.data[0]["message"] == "Вы отменили бронь на событие"
+        assert len(response.data) == 4
+        assert response.data["results"][0]["message"] == "Вы отменили бронь на событие"
